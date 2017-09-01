@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Timothé Larivière</Authors>
+    <Company />
+    <Description />
+    <PackageProjectUrl>https://github.com/TimLariviere/WoodenMoose.FunctionalExtensions</PackageProjectUrl>
+    <RepositoryType>Github</RepositoryType>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+
+</Project>
