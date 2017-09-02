@@ -14,13 +14,13 @@ namespace WoodenMoose.FunctionalExtensions.Rop
         /// <typeparam name="TResult1">Output data type of the outcoming response</typeparam>
         /// <param name="func">Function to wrap</param>
         /// <returns>The binded function</returns>
-        public static Func<Response<T>, Response<TResult1>> Bind<T, TResult1>(this Func<Response<T>, Response<TResult1>> func)
+        public static Func<Response<T>, Response<TResult1>> Bind<T, TResult1>(this Func<T, Response<TResult1>> func)
         {
             return value =>
             {
                 if (value.Type == ResponseType.Success)
                 {
-                    return func(value);
+                    return func(value.Data);
                 }
                 else
                 {
@@ -37,7 +37,7 @@ namespace WoodenMoose.FunctionalExtensions.Rop
         /// <param name="function1">Current function</param>
         /// <param name="function2">Function to chain after</param>
         /// <returns>A new function representing the two chained functions</returns>
-        public static Func<Response<TResult1>> Then<T, TResult1>(this Func<Response<T>> function1, Func<Response<T>, Response<TResult1>> function2)
+        public static Func<Response<TResult1>> Then<T, TResult1>(this Func<Response<T>> function1, Func<T, Response<TResult1>> function2)
         {
             var bindedFunc2 = Bind(function2);
             return () => bindedFunc2(function1());
@@ -51,10 +51,10 @@ namespace WoodenMoose.FunctionalExtensions.Rop
         /// <param name="function1">Current function</param>
         /// <param name="function2">Function to chain after</param>
         /// <returns>A new function representing the two chained functions</returns>
-        public static Func<Response<T>, Response<TResult2>> Then<T, TResult1, TResult2>(this Func<Response<T>, Response<TResult1>> function1, Func<Response<TResult1>, Response<TResult2>> function2)
+        public static Func<Response<T>, Response<TResult2>> Then<T, TResult1, TResult2>(this Func<T, Response<TResult1>> function1, Func<TResult1, Response<TResult2>> function2)
         {
             var bindedFunc2 = Bind(function2);
-            return value => bindedFunc2(function1(value));
+            return value => bindedFunc2(function1(value.Data));
         }
     }
 }

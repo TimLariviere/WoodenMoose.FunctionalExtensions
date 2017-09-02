@@ -8,7 +8,8 @@
     <Description>Set of extension methods that allows functional programming in C#</Description>
     <PackageProjectUrl>https://github.com/TimLariviere/WoodenMoose.FunctionalExtensions</PackageProjectUrl>
     <RepositoryType>Github</RepositoryType>
-    <Version>0.1.2</Version>
+    <Version>0.1.3</Version>
+    <AssemblyVersion>0.1.3.0</AssemblyVersion>
   </PropertyGroup>
 
 </Project>

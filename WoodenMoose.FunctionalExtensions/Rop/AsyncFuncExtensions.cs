@@ -15,13 +15,13 @@ namespace WoodenMoose.FunctionalExtensions.Rop
         /// <typeparam name="TResult1">Output data type of the outcoming response</typeparam>
         /// <param name="func">Function to wrap</param>
         /// <returns>The binded function</returns>
-        public static Func<Response<T>, Task<Response<TResult1>>> Bind<T, TResult1>(this Func<Response<T>, Task<Response<TResult1>>> func)
+        public static Func<Response<T>, Task<Response<TResult1>>> Bind<T, TResult1>(this Func<T, Task<Response<TResult1>>> func)
         {
             return async value =>
             {
                 if (value.Type == ResponseType.Success)
                 {
-                    return await func(value);
+                    return await func(value.Data);
                 }
                 else
                 {
@@ -38,7 +38,7 @@ namespace WoodenMoose.FunctionalExtensions.Rop
         /// <param name="function1">Current function</param>
         /// <param name="function2">Function to chain after</param>
         /// <returns>A new function representing the two chained functions</returns>
-        public static Func<Task<Response<TResult1>>> ThenAsync<T, TResult1>(this Func<Response<T>> function1, Func<Response<T>, Task<Response<TResult1>>> function2)
+        public static Func<Task<Response<TResult1>>> ThenAsync<T, TResult1>(this Func<Response<T>> function1, Func<T, Task<Response<TResult1>>> function2)
         {
             return async () =>
             {
@@ -57,13 +57,13 @@ namespace WoodenMoose.FunctionalExtensions.Rop
         /// <param name="function1">Current function</param>
         /// <param name="function2">Function to chain after</param>
         /// <returns>A new function representing the two chained functions</returns>
-        public static Func<Response<T>, Task<Response<TResult2>>> ThenAsync<T, TResult1, TResult2>(this Func<Response<T>, Response<TResult1>> function1, Func<Response<TResult1>, Task<Response<TResult2>>> function2)
+        public static Func<Response<T>, Task<Response<TResult2>>> ThenAsync<T, TResult1, TResult2>(this Func<T, Response<TResult1>> function1, Func<TResult1, Task<Response<TResult2>>> function2)
         {
             return async value =>
             {
                 var asyncFunc1 = MakeAsync(function1);
                 var bindedFunc2 = Bind(function2);
-                return await bindedFunc2(await asyncFunc1(value));
+                return await bindedFunc2(await asyncFunc1(value.Data));
             };
         }
 
@@ -75,7 +75,7 @@ namespace WoodenMoose.FunctionalExtensions.Rop
         /// <param name="function1">Current function</param>
         /// <param name="function2">Function to chain after</param>
         /// <returns>A new function representing the two chained functions</returns>
-        public static Func<Task<Response<TResult1>>> ThenAsync<T, TResult1>(this Func<Task<Response<T>>> function1, Func<Response<T>, Task<Response<TResult1>>> function2)
+        public static Func<Task<Response<TResult1>>> ThenAsync<T, TResult1>(this Func<Task<Response<T>>> function1, Func<T, Task<Response<TResult1>>> function2)
         {
             return async () =>
             {
@@ -92,7 +92,7 @@ namespace WoodenMoose.FunctionalExtensions.Rop
         /// <param name="function1">Current function</param>
         /// <param name="function2">Function to chain after</param>
         /// <returns>A new function representing the two chained functions</returns>
-        public static Func<Task<Response<TResult1>>> ThenAsync<T, TResult1>(this Func<Task<Response<T>>> function1, Func<Response<T>, Response<TResult1>> function2)
+        public static Func<Task<Response<TResult1>>> ThenAsync<T, TResult1>(this Func<Task<Response<T>>> function1, Func<T, Response<TResult1>> function2)
         {
             return async () =>
             {
@@ -120,7 +120,7 @@ namespace WoodenMoose.FunctionalExtensions.Rop
         /// <typeparam name="T">Output data type of the func</typeparam>
         /// <param name="func">Function to transform</param>
         /// <returns>The asynchronous function</returns>
-        public static Func<Response<T>, Task<Response<TResult1>>> MakeAsync<T, TResult1>(this Func<Response<T>, Response<TResult1>> func)
+        public static Func<T, Task<Response<TResult1>>> MakeAsync<T, TResult1>(this Func<T, Response<TResult1>> func)
         {
             return value => Task.FromResult(func(value));
         }
