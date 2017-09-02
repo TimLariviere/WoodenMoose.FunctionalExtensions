@@ -25,11 +25,7 @@ namespace WoodenMoose.FunctionalExtensions.Rop
                 }
                 else
                 {
-                    return new Response<TResult1>
-                    {
-                        Type = ResponseType.Failure,
-                        FailureReason = value.FailureReason
-                    };
+                    return Response<TResult1>.Failure(value.FailureReason);
                 }
             };
         }
