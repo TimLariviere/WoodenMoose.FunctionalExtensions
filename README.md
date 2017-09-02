@@ -55,7 +55,7 @@ An asynchronous version is also available
 
 ```csharp
 var railwayOrientedFuncAsync = FuncHelper.AsFunc(ReadConsole).ThenAsync(ConvertToIntAsync).ThenAsync(Times2);
-var result2 = railwayOrientedFuncAsync().Result;
+var result2 = await railwayOrientedFuncAsync();
 
 public static async Task<Response<int>> ConvertToIntAsync(Response<string> response)
 {
